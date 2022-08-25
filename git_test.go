@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	git_semver "git-semver"
+	git_semver "github.com/srbry/git-semver"
 )
 
 var _ = DescribeTable("Find the latest semver tag",

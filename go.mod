@@ -1,4 +1,4 @@
-module git-semver
+module github.com/srbry/git-semver
 
 go 1.18
 
