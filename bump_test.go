@@ -28,6 +28,7 @@ var _ = Describe("#Bump", func() {
 		Entry("Test should be none", []string{"test: Example"}, git_semver.None),
 		Entry("Breaking changes should be major", []string{"refactor: Example\n\nBREAKING CHANGE: breaks everything"}, git_semver.Major),
 		Entry("Any type with exclamation should be major", []string{"refactor!: Example"}, git_semver.Major),
+		Entry("Any type with exclamation should be major, docs", []string{"docs!: Example"}, git_semver.Major),
 		Entry("The highest possible version should be returned, minor, major", []string{"feat: example", "refactor!: Example"}, git_semver.Major),
 		Entry("The highest possible version should be returned, minor, patch", []string{"feat: example", "fix: Example"}, git_semver.Minor),
 		Entry("The highest possible version should be returned, patch, minor", []string{"fix: example", "feat: Example"}, git_semver.Minor),
@@ -43,9 +44,9 @@ var _ = DescribeTable("Bump rules as strings",
 	func(rule git_semver.Rule, expected string) {
 		Expect(rule.String()).To(Equal(expected))
 	},
-	Entry("Major", git_semver.Major, "MAJOR"),
-	Entry("Minor", git_semver.Minor, "MINOR"),
-	Entry("Patch", git_semver.Patch, "PATCH"),
+	Entry("Major", git_semver.Major, "major"),
+	Entry("Minor", git_semver.Minor, "minor"),
+	Entry("Patch", git_semver.Patch, "patch"),
 	Entry("None", git_semver.None, ""),
 )
 
