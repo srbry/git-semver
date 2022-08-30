@@ -11,7 +11,7 @@ go install github.com/srbry/git-semver
 
 ## Usage
 
-**note**: At present, `git-semver` will not actually add the new git tag to
+**Note**: At present, `git-semver` will not actually add the new git tag to
 your repository, it will simply output the next version/ rule for you to use
 as you wish.
 
@@ -64,3 +64,21 @@ As well as the rules below. Any type (e.g `ci!`) that appends a `!` is treated a
 | test        | N/A     |
 
 Please raise an issue if you disagree with any of our release rules, we would like to encourage conversation.
+
+## Built With
+
+  - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
+    for the Code of Conduct
+  - [Creative Commons](https://creativecommons.org/) - Used to choose
+    the license
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code
+of conduct, and the process for submitting pull requests to us.
+
+## License
+
+This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
+Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
+details
