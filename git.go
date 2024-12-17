@@ -6,6 +6,7 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/plumbing/storer"
 )
 
@@ -46,4 +47,21 @@ func GetTagRef(repo *git.Repository, tag *plumbing.Reference) plumbing.Hash {
 		return tagRef
 	}
 	return tagCommit.Hash
+}
+
+func CommitMessagesSince(ref plumbing.Hash, commits object.CommitIter) []string {
+	var commitMessages []string
+
+	end := false
+	commits.ForEach(func(commit *object.Commit) error {
+		if commit.Hash == ref {
+			end = true
+		}
+		if end {
+			return nil
+		}
+		commitMessages = append(commitMessages, commit.Message)
+		return nil
+	})
+	return commitMessages
 }

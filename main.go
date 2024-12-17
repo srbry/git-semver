@@ -8,7 +8,6 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/urfave/cli/v2"
 )
 
@@ -23,16 +22,12 @@ func getGitInfo() ([]string, *plumbing.Reference, error) {
 		return nil, nil, err
 	}
 	tagRef := GetTagRef(repo, ref)
-	commits, err := repo.Log(&git.LogOptions{From: tagRef})
+	commits, err := repo.Log(&git.LogOptions{})
 	if err != nil {
 		return nil, nil, err
 	}
-	var commitMessages []string
 
-	commits.ForEach(func(commit *object.Commit) error {
-		commitMessages = append(commitMessages, commit.Message)
-		return nil
-	})
+	commitMessages := CommitMessagesSince(tagRef, commits)
 	return commitMessages, ref, nil
 }
 
