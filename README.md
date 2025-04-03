@@ -55,6 +55,7 @@ As well as the rules below. Any type (e.g `ci!`) that appends a `!` is treated a
 | fix         | `PATCH` |
 | perf        | `PATCH` |
 | refactor    | `PATCH` |
+| deps        | `PATCH` |
 | build       | N/A     |
 | chore       | N/A     |
 | ci          | N/A     |
