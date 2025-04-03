@@ -7,8 +7,6 @@ import (
 	"golang.org/x/exp/slices"
 
 	"github.com/Masterminds/semver"
-	"github.com/leodido/go-conventionalcommits"
-	"github.com/leodido/go-conventionalcommits/parser"
 )
 
 type Rule int64
@@ -20,24 +18,21 @@ const (
 	None
 )
 
-var PatchTypes = []string{"fix", "perf", "refactor"}
+var PatchTypes = []string{"fix", "perf", "refactor", "deps"}
 var MinorTypes = []string{"feat"}
 
 func BumpRule(commitMessages []string) Rule {
 	var rule Rule = None
-	commitParser := parser.NewMachine([]conventionalcommits.MachineOption{
-		conventionalcommits.WithTypes(conventionalcommits.TypesConventional),
-		conventionalcommits.WithBestEffort(),
-	}...)
+
 	for _, message := range commitMessages {
-		conventionalCommit, _ := commitParser.Parse([]byte(cleanMessagePrefix(message)))
-		if conventionalCommit == nil {
+		isConvential, isBreakingChange, commitType := getCommitType(cleanMessagePrefix(message))
+
+		if !isConvential {
 			continue
 		}
-		if conventionalCommit.IsBreakingChange() {
+		if isBreakingChange {
 			return Major
 		}
-		commitType := conventionalCommit.(*conventionalcommits.ConventionalCommit).Type
 		if slices.Contains(PatchTypes, commitType) && rule == None {
 			rule = Patch
 		}
@@ -81,4 +76,18 @@ func cleanMessagePrefix(message string) string {
 		return strings.Join(messageParts[1:], " ")
 	}
 	return message
+}
+
+func getCommitType(commitMessage string) (bool, bool, string) {
+	re := regexp.MustCompile(`(?P<commit_type>^[a-zA-Z]+)\(?`)
+	groups := re.FindStringSubmatch(commitMessage)
+	commitTypeIndex := re.SubexpIndex("commit_type")
+
+	if commitTypeIndex == -1 {
+		return false, false, ""
+	}
+
+	isBreakingChange := strings.Contains(commitMessage, "!") || strings.Contains(commitMessage, "BREAKING CHANGE")
+
+	return true, isBreakingChange, groups[commitTypeIndex]
 }
